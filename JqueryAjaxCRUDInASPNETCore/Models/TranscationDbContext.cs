@@ -7,5 +7,6 @@ namespace JqueryAjaxCRUDInASPNETCore.Models
         public TranscationDbContext(DbContextOptions<TranscationDbContext> options) : base(options)
         {
         }
+        public DbSet<TransactionModel> Transactions { get; set; }
     }
 }

@@ -47,9 +47,7 @@ namespace JqueryAjaxCRUDInASPNETCore.Controllers
         public async Task<IActionResult> AddOrEdit(int id = 0)
         {
             if (id == 0)
-            {
                 return View(new TransactionModel());
-            }
             else
             {
                 var transactionModel = await _context.Transactions.FindAsync(id);
@@ -59,55 +57,25 @@ namespace JqueryAjaxCRUDInASPNETCore.Controllers
                 }
                 return View(transactionModel);
             }
-
         }
 
-        // POST: Transaction/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TransactionId,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount")] TransactionModel transactionModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(transactionModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(transactionModel);
-        }
-
-        // GET: Transaction/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var transactionModel = await _context.Transactions.FindAsync(id);
-            if (transactionModel == null)
-            {
-                return NotFound();
-            }
-            return View(transactionModel);
-        }
 
         // POST: Transaction/AddOrEdit
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit(int id, [Bind("TransactionId,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount,Date")] TransactionModel transactionModel)
         {
             if (ModelState.IsValid)
             {
+                //Insert
                 if (id == 0)
                 {
+                    transactionModel.Date = DateTime.Now;
                     _context.Add(transactionModel);
                     await _context.SaveChangesAsync();
+
                 }
+                //Update
                 else
                 {
                     try
@@ -118,21 +86,15 @@ namespace JqueryAjaxCRUDInASPNETCore.Controllers
                     catch (DbUpdateConcurrencyException)
                     {
                         if (!TransactionModelExists(transactionModel.TransactionId))
-                        {
-                            return NotFound();
-                        }
+                        { return NotFound(); }
                         else
-                        {
-                            throw;
-                        }
+                        { throw; }
                     }
                 }
-
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Index", _context.Transactions.ToList()) });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.ToList()) });
             }
-            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this,"AddedOrEdit",transactionModel) });
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", transactionModel) });
         }
-
         // GET: Transaction/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

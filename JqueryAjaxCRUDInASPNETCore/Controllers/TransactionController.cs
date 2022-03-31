@@ -44,7 +44,6 @@ namespace JqueryAjaxCRUDInASPNETCore.Controllers
 
         // GET: Transaction/AddOrEdit
         // GET: Transaction/AddOrEdit/5
-        [Helper.NoDirectAccessAttribute]
         public async Task<IActionResult> AddOrEdit(int id = 0)
         {
             if (id == 0)

@@ -25,24 +25,24 @@ jQueryAjaxPost = form => {
             data: new FormData(form),
             contentType: false,
             processData: false,
-            success: function (res) {
+            success: function(res) {
                 if (res.isValid) {
                     $('#view-all').html(res.html)
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
                     $('#form-modal').modal('hide');
-                }
-                else
+                    $.notify('submitted successfully', { globalPosition: 'top center', className: 'success' });
+                } else
                     $('#form-modal .modal-body').html(res.html);
             },
-            error: function (err) {
-                console.log(err)
+            error: function(err) {
+                console.log(err);
             }
-        })
+        });
 
         return false;
     } catch (ex) {
-        console.log(ex)
+        console.log(ex);
     }
 }
 
@@ -55,15 +55,18 @@ jQueryAjaxDelete = form => {
                 data: new FormData(form),
                 contentType: false,
                 processData: false,
-                success: function (res) {
+                success: function(res) {
                     $('#view-all').html(res.html);
+                    $.notify('deleted successfully', { globalPosition: 'top center', className: 'success' });
+
+
                 },
-                error: function (err) {
-                    console.log(err)
+                error: function(err) {
+                    console.log(err);
                 }
-            })
+            });
         } catch (ex) {
-            console.log(ex)
+            console.log(ex);
         }
     }
 

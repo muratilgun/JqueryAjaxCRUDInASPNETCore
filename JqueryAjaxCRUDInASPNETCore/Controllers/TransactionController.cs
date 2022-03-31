@@ -103,7 +103,7 @@ namespace JqueryAjaxCRUDInASPNETCore.Controllers
             var transactionModel = await _context.Transactions.FindAsync(id);
             _context.Transactions.Remove(transactionModel);
             await _context.SaveChangesAsync();
-            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.ToList()) });
+            return Json(new {html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.ToList()) });
 
         }
 
